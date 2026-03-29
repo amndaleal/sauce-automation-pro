@@ -9,14 +9,15 @@ export class HomePage {
 
   constructor(page: Page) {
     this.page = page;
-    this.searchInput = page.getByRole('textbox', { name: 'Search' });
+    this.searchInput = page.getByPlaceholder('Search').or(page.getByRole('textbox', { name: 'Search' }));
     this.searchSubmitButton = page.getByRole('button', { name: 'Submit' });
     this.catalogLink = page.getByRole('link', { name: 'Catalog' });
   }
 
   async goto(): Promise<void> {
     await this.page.goto('https://sauce-demo.myshopify.com/');
-    await expect(this.searchInput).toBeVisible();
+    await expect(this.page.getByRole('heading', { name: 'Sauce Demo' })).toBeVisible({ timeout: 15000 });
+    await expect(this.searchInput).toBeVisible({ timeout: 15000 });
     await expect(this.catalogLink).toBeVisible();
   }
 

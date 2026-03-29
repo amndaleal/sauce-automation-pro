@@ -22,7 +22,7 @@ test('catalog -> add 2 products -> cart count -> checkout -> payment methods', a
 
   await expect(catalogCheckoutPage.paymentHeading).toBeVisible();
   await expect(catalogCheckoutPage.paymentHeading).toHaveText(/Payment/i);
-  expect(paymentMethods.length, 'Nenhum método de pagamento encontrado no checkout.').toBeGreaterThan(0);
+  expect(paymentMethods.length, 'No payment methods were found at checkout.').toBeGreaterThan(0);
 
   await catalogCheckoutPage.placeOrderWithBogusCard();
   await catalogCheckoutPage.openMyAccountAndAssertShoppingHistory();

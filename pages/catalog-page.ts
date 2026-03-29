@@ -25,6 +25,8 @@ export class CatalogPage {
   }
 
   async assertCartCount(expectedCount: number): Promise<void> {
-    await expect(this.myCartLink).toHaveText(`My Cart (${expectedCount})`);
+    await expect(async () => {
+      await expect(this.myCartLink).toHaveText(`My Cart (${expectedCount})`);
+    }).toPass({ timeout: 10000 });
   }
 }

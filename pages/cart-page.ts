@@ -17,8 +17,9 @@ export class CartPage {
   }
 
   async assertItemAndPrice(productName: string, productPrice: string): Promise<void> {
+    const cartSection = this.page.getByRole('heading', { name: 'My Cart' }).locator('..');
     await expect(this.page.getByRole('link', { name: new RegExp(productName, 'i') }).first()).toBeVisible();
-    await expect(this.page.getByText(productPrice).last()).toBeVisible();
+    await expect(cartSection).toContainText(productPrice);
   }
 
   async proceedToCheckout(): Promise<void> {
