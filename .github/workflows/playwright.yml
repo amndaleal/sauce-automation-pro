@@ -16,7 +16,9 @@ jobs:
         cache: npm
     - name: Get Playwright version
       id: pw-version
-      run: echo "version=$(node -p \"require('./package-lock.json').packages['node_modules/@playwright/test'].version\")" >> $GITHUB_OUTPUT
+      run: |
+        PW_VERSION=$(node -e 'const lock=require("./package-lock.json"); const v=lock.packages?.["node_modules/@playwright/test"]?.version ?? lock.devDependencies?.["@playwright/test"]?.version ?? ""; console.log(v);')
+        echo "version=$PW_VERSION" >> "$GITHUB_OUTPUT"
     - name: Cache Playwright browsers
       uses: actions/cache@v4
       with:
