@@ -1,4 +1,4 @@
-﻿import { expect, test } from '@playwright/test';
+import { expect, test } from '../../fixtures/authenticated-test';
 import { CatalogPage } from '../../pages/catalog-page';
 import { HomePage } from '../../pages/home-page';
 import { ProductPage } from '../../pages/product-page';
@@ -17,3 +17,4 @@ test('product discovery by search should open Grey jacket detail page', async ({
   await product.assertOnProductDetail('Grey jacket');
   await expect(page).toHaveURL(/\/products\/grey-jacket/);
 });
+

@@ -1,10 +1,20 @@
-﻿import { expect, test as base } from '@playwright/test';
+import { expect, test as base } from '@playwright/test';
+import { LoginPage } from '../page-objects/login-page';
 
 export const test = base;
 export { expect };
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('https://sauce-demo.myshopify.com/');
-  await expect(page.getByRole('link', { name: 'My Account' })).toBeVisible();
-  await expect(page.getByRole('link', { name: /Log Out|Log out/i })).toBeVisible();
+  const email = process.env.SAUCE_DEMO_EMAIL ?? '';
+  const password = process.env.SAUCE_DEMO_PASSWORD ?? '';
+
+  test.skip(
+    !email || !password,
+    'Set SAUCE_DEMO_EMAIL and SAUCE_DEMO_PASSWORD to run authenticated tests.',
+  );
+
+  const login = new LoginPage(page);
+  await login.goto();
+  await login.login(email, password);
+  await login.assertLoggedIn();
 });

@@ -1,4 +1,4 @@
-ï»¿import { expect, test } from '@playwright/test';
+import { expect, test } from '../../fixtures/authenticated-test';
 import { CartPage } from '../../pages/cart-page';
 import { CatalogPage } from '../../pages/catalog-page';
 import { HomePage } from '../../pages/home-page';
@@ -27,6 +27,7 @@ test('cart management should keep correct item count and prices', async ({ page 
   await catalog.assertCartCount(2);
 
   await cart.openFromHeader();
-  await cart.assertItemAndPrice('Grey jacket', 'Â£55.00');
-  await cart.assertItemAndPrice('Noir jacket', 'Â£60.00');
+  await cart.assertItemAndPrice('Grey jacket', '£55.00');
+  await cart.assertItemAndPrice('Noir jacket', '£60.00');
 });
+

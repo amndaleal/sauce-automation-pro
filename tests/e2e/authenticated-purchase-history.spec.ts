@@ -5,7 +5,7 @@ import { CheckoutPage } from '../../pages/checkout-page';
 import { HomePage } from '../../pages/home-page';
 import { ProductPage } from '../../pages/product-page';
 
-test('checkout workflow should reach payment step with valid required data', async ({ page }) => {
+test('authenticated user should complete purchase and find products in account order history', async ({ page }) => {
   const home = new HomePage(page);
   const catalog = new CatalogPage(page);
   const product = new ProductPage(page);
@@ -23,7 +23,13 @@ test('checkout workflow should reach payment step with valid required data', asy
   await cart.proceedToCheckout();
 
   await checkout.fillRequiredDetailsAndReachPayment();
-  await expect(checkout.paymentHeading).toBeVisible();
-  await expect(page).toHaveURL(/\/checkouts?\//);
+  await checkout.submitBogusCardPayment();
+  await checkout.assertOrderSuccess();
+
+  const purchasedProducts = await checkout.scrapePurchasedProductsFromAccount();
+  expect(
+    purchasedProducts.some((item) => /Grey jacket/i.test(item)),
+    `Could not find purchased product in account history. Scraped items: ${purchasedProducts.join(', ')}`,
+  ).toBeTruthy();
 });
 
