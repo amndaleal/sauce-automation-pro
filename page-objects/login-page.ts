@@ -40,8 +40,8 @@ export class LoginPage {
   }
 
   async assertLoggedIn(): Promise<void> {
-    await expect(this.myAccountLink).toBeVisible();
     await expect(this.logOutLink).toBeVisible();
+    await expect(this.page.getByRole('link', { name: 'Log In' })).toHaveCount(0);
   }
 
   async assertAuthenticationFailed(): Promise<void> {

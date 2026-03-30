@@ -24,4 +24,15 @@ export class ProductPage {
     await addToCartRequest;
     await waitForLoading(this.page);
   }
+
+  async addToCartAndGetBackendStatus(): Promise<number> {
+    const addToCartRequest = this.page.waitForResponse((response) => {
+      return response.url().includes('/cart/add.js') && response.request().method() === 'POST';
+    });
+
+    await this.addToCartButton.click();
+    const response = await addToCartRequest;
+    await waitForLoading(this.page);
+    return response.status();
+  }
 }

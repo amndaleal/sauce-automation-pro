@@ -5,6 +5,7 @@ export class CheckoutPage {
   readonly page: Page;
   readonly paymentHeading: Locator;
   readonly payNowButton: Locator;
+  readonly shippingMethodPrompt: Locator;
   readonly myAccountHeading: Locator;
   readonly orderHistoryHeading: Locator;
 
@@ -12,6 +13,7 @@ export class CheckoutPage {
     this.page = page;
     this.paymentHeading = page.getByRole('heading', { name: 'Payment' });
     this.payNowButton = page.getByRole('button', { name: 'Pay now' });
+    this.shippingMethodPrompt = page.getByText('Enter your shipping address to view available shipping methods.');
     this.myAccountHeading = page.getByRole('heading', { name: 'My Account' });
     this.orderHistoryHeading = page.getByRole('heading', { name: 'Order History' });
   }
@@ -34,6 +36,11 @@ export class CheckoutPage {
 
     await expect(this.paymentHeading).toBeVisible();
     await expect(this.payNowButton).toBeEnabled();
+  }
+
+  async assertPaymentBlockedWithoutRequiredAddress(): Promise<void> {
+    await expect(this.shippingMethodPrompt).toBeVisible();
+    await expect(this.payNowButton).toBeDisabled();
   }
 
   async submitBogusCardPayment(): Promise<void> {
